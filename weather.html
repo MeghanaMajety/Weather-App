@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather App</title>
+    <link rel="stylesheet" href="./weather.css" />
+    <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/1779/1779940.png" />
+    <script src="https://kit.fontawesome.com/519a911d6b.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <center>
+        <div class="container">
+            <p><i class="fa-solid fa-cloud" style="color: white; font-size: 20px;"></i> &nbsp; Weather App</p>
+            <form id="form">
+                <i class="fa-solid fa-city"></i> &nbsp; <input type="text" placeholder="Enter City" id="input" /><br/><br/>
+                <button id="button"><i class="fa-solid fa-magnifying-glass"></i>Search</button>
+            </form>
+            <img src="./images/1-removebg-preview.png"/>
+            <div id="cities">
+            </div>
+        </div> 
+    </center>
+
+    <script>
+        const form=document.getElementById("form");
+        const input=document.getElementById("input");
+        const info=document.getElementById("cities");
+        const apiKey="ce29dfd0fc4986226c64cde82c63201d";
+        form.addEventListener("click", e=>{
+            e.preventDefault();  //preventDefault=> In order to control or stop the submission behavior of the page.
+            info.textContent="";
+            const inputValue=input.value;  //to collect the value from the input.
+            const url=`https://api.openweathermap.org/data/2.5/weather?q=${inputValue}&appid=${apiKey}&units=metric`;
+            
+            fetch(url).then(response=>response.json())
+            .then(data=>{
+                const {main, name}=data;
+                const para=document.createElement("div");
+                para.innerHTML=`
+                <div style="font-size: 35px; color: whitesmoke; font-weight: bold;">${Math.round(main.temp)}<sup>0</sup>C</div><p style="font-size: 20px; font-weight: 300; color: whitesmoke;"><i class="fa-solid fa-location-dot" style="color: red;"></i> &nbsp; City: ${name}</p>`;
+                info.appendChild(para);
+            })
+            // .catch(()=>{
+            //     alert("Please enter the valid city");
+            // });
+            form.reset();
+        })
+    </script>
+</body>
+</html>
